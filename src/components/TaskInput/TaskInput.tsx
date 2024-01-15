@@ -33,7 +33,7 @@ export default function TaskInput(props: TaskInputProps) {
       finishEditTodo()
 
       // bug nhỏ
-      // input đang có giá trị mà chúng ta bấm edit thì nó hiển thị current.name cần chỉnh sửa
+      // input đang có giá trị mà chúng ta bấm edit ở List thì nó hiển thị current.name cần chỉnh sửa
       // Khi chúng ta edit xong bấm Enter thì giá trị input mà chúng ta đang nhập dở sẽ được hiển thị lại
       // Ta muốn khi edit xong thì thanh input phải rỗng
       if (name) setName('')

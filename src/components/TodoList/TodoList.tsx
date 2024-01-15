@@ -48,7 +48,7 @@ export default function TodoList() {
         }
     }
 
-    //do currentTodo có thể là Todo hoặc null neen phải có if
+    //do currentTodo có thể là Todo hoặc null nên phải có if
     //phải có hàm này để ta có thể tự do chỉnh sửa input nếu không sẽ chỉ có current.name trên input
     const editTodo = (name: string) => {
         setCurrentTodo((prev) => {
@@ -70,13 +70,32 @@ export default function TodoList() {
         setCurrentTodo(null)
     }
 
+    const deleteTodo = (id: string) => {
+        // bug nhỏ
+        // Chúng ta đang có input do bấm edit
+        // Khi delete item đó thì data của item vẫn còn trên input
+        // Ta muốn khi delete thì ở trên input cũng mất
+        if (currentTodo) {
+            setCurrentTodo(null)
+        }
+        setTodos((prev) => {
+            const findIndexTodo = prev.findIndex((todo) => todo.id === id)
+            if (findIndexTodo > -1) {
+                const result = [...prev]
+                result.splice(findIndexTodo, 1)
+                return result;
+            }
+            return prev
+        })
+    }
+
 
     return (
         <div className={styles.todoList}>
             <div className={styles.todoListContainer}>
                 <TaskInput addTodo={addTodo} currentTodo={currentTodo} editTodo={editTodo} finishEditTodo={finishEditTodo} />
-                <TaskList todos={notdoneTodos} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} />
-                <TaskList doneTaskList todos={doneTodos} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} />
+                <TaskList todos={notdoneTodos} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} deleteTodo={deleteTodo} />
+                <TaskList doneTaskList todos={doneTodos} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} deleteTodo={deleteTodo} />
             </div>
         </div>
     )
