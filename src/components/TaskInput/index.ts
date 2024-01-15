@@ -1,3 +1,3 @@
-import TaskInput from "./TaskInput";
+import TaskInput from './TaskInput'
 
-export default TaskInput;
+export default TaskInput
