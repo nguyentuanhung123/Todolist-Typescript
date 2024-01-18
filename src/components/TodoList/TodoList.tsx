@@ -62,14 +62,12 @@ export default function TodoList() {
     }
 
     const handleDoneTodo = (id: string, done: boolean) => {
-        setTodos((prev) => {
-            return prev.map((todo) => {
-                if (todo.id === id) {
-                    return { ...todo, done }
-                }
-                return todo
-            })
+        const newTodos = todos.map((todo) => {
+            if (todo.id === id) return { ...todo, done }
+            return todo
         })
+        setTodos(newTodos)
+        localStorage.setItem('todos', JSON.stringify(newTodos))
     }
 
     //Phải để trong if để đúng về mặt logic
