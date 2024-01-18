@@ -3,12 +3,25 @@ import TaskList from '../TaskList'
 import styles from './todoList.module.scss'
 
 import { Todo } from '../../@types/todo.type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Nếu ta không truyền gì từ thằng cha xuống thằng con thì sẽ mặc định là undifined => false
 // Nếu có doneTaskList thì sẽ mặc định là true ( doneTaskList  = {false} )
 
 // Bài 112 : Tạo thư mục mới là @types
+
+// interface HandleNewTodos {
+//     (todos: Todo[]): Todo[]
+// }
+
+type HandleNewTodos = (todos: Todo[]) => Todo[]
+
+const syncReactToLocal = (handleNewTodos: HandleNewTodos) => {
+    const todosString = localStorage.getItem('todos')
+    const todosObj: Todo[] = JSON.parse(todosString || '[]') // use the JavaScript function JSON.parse() to convert text into a JavaScript object (todosString maybe is null)
+    const newTodosObj = handleNewTodos(todosObj);
+    localStorage.setItem('todos', JSON.stringify(newTodosObj)) // when sending data to a web server, the data has to be a string. Convert a JavaScript object into a string with JSON.stringify().
+}
 
 export default function TodoList() {
 
@@ -20,13 +33,32 @@ export default function TodoList() {
 
     const notdoneTodos = todos.filter((todo) => !todo.done);
 
+    useEffect(() => {
+        const todosString = localStorage.getItem('todos');
+        const todosObj: Todo[] = JSON.parse(todosString || '[]')
+        setTodos(todosObj)
+    }, [])
+
     const addTodo = (name: string) => {
+
         const todo: Todo = {
             name,
             done: false,
             id: new Date().toISOString()
         }
-        setTodos((prev) => [...prev, todo])
+        //save to RAM and show in Browser
+        //setTodos((prev) => [...prev, todo])
+
+        const handler = (todosObj: Todo[]) => {
+            return [...todosObj, todo]
+        }
+
+        setTodos(handler)
+        syncReactToLocal(handler)
+
+        //Short hand
+        //syncReactToLocal((todosObj: Todo[]) => [...todosObj, todo])
+
     }
 
     const handleDoneTodo = (id: string, done: boolean) => {
@@ -58,16 +90,27 @@ export default function TodoList() {
     }
 
     const finishEditTodo = () => {
-        setTodos((prev) => {
-            return prev.map((todo) => {
+        // setTodos((prev) => {
+        //     return prev.map((todo) => {
+        //         //phải có dấu ? vì currentTodo có trường hợp currentTodo là null (hoặc để (currentTodo as Todo).id) => return currentTodo as Todo
+        //         if (todo.id === currentTodo?.id) {
+        //             return currentTodo
+        //         }
+        //         return todo
+        //     })
+        // })
+        const handler = (todosObj: Todo[]) => {
+            return todosObj.map((todo) => {
                 //phải có dấu ? vì currentTodo có trường hợp currentTodo là null (hoặc để (currentTodo as Todo).id) => return currentTodo as Todo
                 if (todo.id === currentTodo?.id) {
                     return currentTodo
                 }
                 return todo
             })
-        })
-        setCurrentTodo(null)
+        }
+        setTodos(handler);
+        setCurrentTodo(null);
+        syncReactToLocal(handler)
     }
 
     const deleteTodo = (id: string) => {
@@ -78,15 +121,26 @@ export default function TodoList() {
         if (currentTodo) {
             setCurrentTodo(null)
         }
-        setTodos((prev) => {
-            const findIndexTodo = prev.findIndex((todo) => todo.id === id)
+        // setTodos((prev) => {
+        //     const findIndexTodo = prev.findIndex((todo) => todo.id === id)
+        //     if (findIndexTodo > -1) {
+        //         const result = [...prev]
+        //         result.splice(findIndexTodo, 1)
+        //         return result;
+        //     }
+        //     return prev
+        // })
+        const handler = (todosObj: Todo[]) => {
+            const findIndexTodo = todosObj.findIndex((todo) => todo.id === id)
             if (findIndexTodo > -1) {
-                const result = [...prev]
+                const result = [...todosObj]
                 result.splice(findIndexTodo, 1)
                 return result;
             }
-            return prev
-        })
+            return todosObj
+        }
+        setTodos(handler);
+        syncReactToLocal(handler)
     }
 
 
