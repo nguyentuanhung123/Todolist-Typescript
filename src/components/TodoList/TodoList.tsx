@@ -49,12 +49,12 @@ export default function TodoList() {
         //save to RAM and show in Browser
         //setTodos((prev) => [...prev, todo])
 
-        const handler = (todosObj: Todo[]) => {
+        const handleAdd = (todosObj: Todo[]) => {
             return [...todosObj, todo]
         }
 
-        setTodos(handler)
-        syncReactToLocal(handler)
+        setTodos(handleAdd)
+        syncReactToLocal(handleAdd)
 
         //Short hand
         //syncReactToLocal((todosObj: Todo[]) => [...todosObj, todo])
@@ -99,7 +99,7 @@ export default function TodoList() {
         //         return todo
         //     })
         // })
-        const handler = (todosObj: Todo[]) => {
+        const handleEdit = (todosObj: Todo[]) => {
             return todosObj.map((todo) => {
                 //phải có dấu ? vì currentTodo có trường hợp currentTodo là null (hoặc để (currentTodo as Todo).id) => return currentTodo as Todo
                 if (todo.id === currentTodo?.id) {
@@ -108,9 +108,9 @@ export default function TodoList() {
                 return todo
             })
         }
-        setTodos(handler);
+        setTodos(handleEdit);
         setCurrentTodo(null);
-        syncReactToLocal(handler)
+        syncReactToLocal(handleEdit)
     }
 
     const deleteTodo = (id: string) => {
@@ -130,7 +130,7 @@ export default function TodoList() {
         //     }
         //     return prev
         // })
-        const handler = (todosObj: Todo[]) => {
+        const handleDelete = (todosObj: Todo[]) => {
             const findIndexTodo = todosObj.findIndex((todo) => todo.id === id)
             if (findIndexTodo > -1) {
                 const result = [...todosObj]
@@ -139,8 +139,8 @@ export default function TodoList() {
             }
             return todosObj
         }
-        setTodos(handler);
-        syncReactToLocal(handler)
+        setTodos(handleDelete);
+        syncReactToLocal(handleDelete)
     }
 
 
