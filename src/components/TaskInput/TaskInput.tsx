@@ -1,6 +1,11 @@
 import { useState } from 'react'
-import styles from './taskInput.module.scss'
+import PropTypes from 'prop-types'
+
 import { Todo } from '../../@types/todo.type'
+import { TodoTypes } from '../../PropTypes/todo.proptype'
+
+import styles from './taskInput.module.scss'
+
 
 // gõ nhanh h1.{styles.title}
 // Thêm icon từ window với cú pháp là : window + ';'
@@ -57,4 +62,11 @@ export default function TaskInput(props: TaskInputProps) {
       </form>
     </div>
   )
+}
+
+TaskInput.propTypes = {
+  addTodo: PropTypes.func.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  finishEditTodo: PropTypes.func.isRequired,
+  currentTodo: PropTypes.oneOfType([TodoTypes, PropTypes.oneOf([null])])
 }

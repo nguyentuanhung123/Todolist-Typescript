@@ -1,7 +1,11 @@
 import { useState } from 'react'
-import styles from './taskList.module.scss'
+import PropTypes from 'prop-types';
 
 import { Todo } from '../../@types/todo.type'
+import { TodoTypes } from '../../PropTypes/todo.proptype';
+
+import styles from './taskList.module.scss'
+
 
 // Phải thêm đoạn bên dưới khi truyền props ( ? -> có cũng được , không có cũng được)
 
@@ -49,4 +53,14 @@ export default function TaskList(props: TaskListProps) {
             </div>
         </div>
     )
+}
+
+TaskList.propTypes = {
+    doneTaskList: PropTypes.bool, //loại có cũng cũng được không có cũng được không cần có reqired
+    todos: PropTypes.arrayOf(
+        TodoTypes
+    ),
+    handleDoneTodo: PropTypes.func,
+    startEditTodo: PropTypes.func,
+    deleteTodo: PropTypes.func,
 }

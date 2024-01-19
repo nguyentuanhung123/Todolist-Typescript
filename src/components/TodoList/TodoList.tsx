@@ -62,12 +62,20 @@ export default function TodoList() {
     }
 
     const handleDoneTodo = (id: string, done: boolean) => {
-        const newTodos = todos.map((todo) => {
-            if (todo.id === id) return { ...todo, done }
-            return todo
-        })
-        setTodos(newTodos)
-        localStorage.setItem('todos', JSON.stringify(newTodos))
+        // const newTodos = todos.map((todo) => {
+        //     if (todo.id === id) return { ...todo, done }
+        //     return todo
+        // })
+        // setTodos(newTodos)
+        // localStorage.setItem('todos', JSON.stringify(newTodos))
+        const handler = (todosObj: Todo[]) => {
+            return todosObj.map((todo) => {
+                if (todo.id === id) return { ...todo, done }
+                return todo
+            })
+        }
+        setTodos(handler);
+        syncReactToLocal(handler);
     }
 
     //Phải để trong if để đúng về mặt logic
