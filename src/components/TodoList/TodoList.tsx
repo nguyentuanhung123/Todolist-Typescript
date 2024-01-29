@@ -81,11 +81,13 @@ export default function TodoList() {
     //Phải để trong if để đúng về mặt logic
     const startEditTodo = (id: string) => {
         const findedTodo = todos.find((todo) => todo.id === id);
+        //do findedTodo có kiểu dữ liệu là Todo hoặc undifined nên nếu chỉ để setCurrentTodo(findedTodo) sẽ không đúng do currentTodo có kiểu dữ liệu là Todo hoặc null
         if (findedTodo) {
-            setCurrentTodo(findedTodo);
+            setCurrentTodo(findedTodo);//ta phải để findedTodo trong if để findedTodo lúc nào cũng sẽ có giá trị => đảm bảo về mặt typescript
         }
     }
 
+    //do ta chỉ change mỗi name nên cập nhật mỗi name
     //do currentTodo có thể là Todo hoặc null nên phải có if
     //phải có hàm này để ta có thể tự do chỉnh sửa input nếu không sẽ chỉ có current.name trên input
     const editTodo = (name: string) => {
@@ -93,8 +95,12 @@ export default function TodoList() {
             if (prev) return { ...prev, name }
             return null
         })
+
+        //đoạn code bên dưới bị lỗi do prev có thể là null , nếu ta để ... => lỗi => ta phỉa sử dụng đoạn code bên trên
+        //setCurrentTodo((prev) => ({...prev,name}))
     }
 
+    //change state tổng và setCurrentodo là null
     const finishEditTodo = () => {
         // setTodos((prev) => {
         //     return prev.map((todo) => {
@@ -108,6 +114,7 @@ export default function TodoList() {
         const handleEdit = (todosObj: Todo[]) => {
             return todosObj.map((todo) => {
                 //phải có dấu ? vì currentTodo có trường hợp currentTodo là null (hoặc để (currentTodo as Todo).id) => return currentTodo as Todo
+                // node : sau khi ta viết xong currentTodo.id ta phải gõ Enter để nó tự có thể thêm dấu ?
                 if (todo.id === currentTodo?.id) {
                     return currentTodo
                 }

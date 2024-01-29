@@ -92,3 +92,19 @@ B2 : Tạo file app.module.scss trong src
 B3 : Thêm css bất kỳ : .app{}
 B4 : import styles from './app.module.scss' trong App.tsx
 B5 : Sử dụng class bằng cách : className={styles.app}
+
+### Bài học rút ra ở bài 115 (Đồng bộ hóa React và local storage)
+* setTodos là một hàm nhận một array cũ rồi tạo array mới
+* Ta tạo các hàm như handleAdd , handleEdit , ... rồi đặt vào trong setTodos (callback) (setTodos(handler))
+* Các hàm handleAdd , handleEdit , ... đều có một đặt điểm chung là nhận một array cũ rồi tạo array mới => tạo 1 prop-type
+
+
+### Bài học rút ra ở bài 116 (Thêm proptype checking)
+* Lưu ý : typescript chỉ chạy khi code , còn proptype chạy run-time(tức là nếu trong code ta sai một chỗ nào đó , thì khi chạy app nó sẽ hiển thị ra một màn hình đen với lỗi)
+* Thứ tự đặt 
+1. Thư viện
+2. Components
+3. Scss , css
+
+B1 : npm i prop-types
+B2 : import PropTypes from 'prop-types'
